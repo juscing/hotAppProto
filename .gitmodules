@@ -1,0 +1,3 @@
+[submodule "ArcMenu"]
+	path = ArcMenu
+	url = https://github.com/daCapricorn/ArcMenu.git
