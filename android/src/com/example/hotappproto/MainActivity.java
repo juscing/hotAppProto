@@ -1,18 +1,41 @@
 package com.example.hotappproto;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.capricorn.ArcLayout;
+import com.capricorn.ArcMenu;
+
+import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuItem;
+import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuRenderer;
+import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuRenderer.OnRadailMenuClick;
 
 public class MainActivity extends Activity {
 
+	private static final int[] ITEM_DRAWABLES = { R.drawable.ic_launcher, R.drawable.ic_launcher,
+		R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher, R.drawable.ic_launcher };
+	
+	private ArrayList<RadialMenuItem> items;
+	
+	private RadialMenuRenderer mRenderer;
+	RadialMenuItem menuItem;
+	RadialMenuItem menuItem2;
+	RadialMenuItem menuItem3;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -22,6 +45,64 @@ public class MainActivity extends Activity {
 			getFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+		
+		FrameLayout v = (FrameLayout) findViewById(R.id.container);
+		
+		items = new ArrayList<RadialMenuItem>();
+		
+		mRenderer = new RadialMenuRenderer(v, true, 60, 120);
+		menuItem = new RadialMenuItem("Test","Test");
+		menuItem2 = new RadialMenuItem("Test","Test");
+		menuItem3 = new RadialMenuItem("Test","Test");
+		
+		
+		
+		menuItem.setOnRadialMenuClickListener(new OnRadailMenuClick() {
+			@Override
+			public void onRadailMenuClickedListener(String id) {
+				//Can edit based on preference. Also can add animations here.
+				Toast.makeText(MainActivity.this, "One", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		menuItem2.setOnRadialMenuClickListener(new OnRadailMenuClick() {
+			@Override
+			public void onRadailMenuClickedListener(String id) {
+				//Can edit based on preference. Also can add animations here.
+				Toast.makeText(MainActivity.this, "Two", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		menuItem3.setOnRadialMenuClickListener(new OnRadailMenuClick() {
+			@Override
+			public void onRadailMenuClickedListener(String id) {
+				//Can edit based on preference. Also can add animations here.
+				Toast.makeText(MainActivity.this, "Three", Toast.LENGTH_SHORT).show();
+			}
+		});
+		
+		
+		
+		
+		items.add(menuItem);
+		items.add(menuItem2);
+		items.add(menuItem3);
+		mRenderer.setRadialMenuContent(items);
+	    
+	    v.addView(mRenderer.renderView());
+	    /*
+	    v.setOnTouchListener(new OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				pieMenu.setSourceLocation((int) event.getX(), (int) event.getY());
+				pieMenu.show(v);
+				
+				return false;
+			}
+	    	
+	    });
+	    */
 	}
 
 	@Override
@@ -57,8 +138,37 @@ public class MainActivity extends Activity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
+			
+			ArcMenu menu = (ArcMenu) rootView.findViewById(R.id.arc_menu);
+
+		    ArcLayout arcLayout= new ArcLayout(this.getActivity());
+		    arcLayout.setChildSize(50);
+		    arcLayout.setArc(0.0f, 300.0f); 
+
+
+
+		    final int itemCount = ITEM_DRAWABLES.length;
+		    for (int i = 0; i < itemCount; i++) {
+		        ImageView item = new ImageView(getActivity().getApplicationContext());
+		        item.setImageResource(ITEM_DRAWABLES[i]);
+
+		        final int position = i;
+		        menu.addItem(item, new OnClickListener() {
+
+		            @Override
+		            public void onClick(View v) {
+		                Toast.makeText(getActivity(), "position:" + position, Toast.LENGTH_SHORT).show();
+		            }
+		        });// Add a menu item
+		    }
+			
+		   
+			
+		    
+		    
 			return rootView;
 		}
+		
 	}
 
 }
