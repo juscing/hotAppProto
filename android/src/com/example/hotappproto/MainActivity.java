@@ -17,9 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.capricorn.ArcLayout;
-import com.capricorn.ArcMenu;
-
 import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuItem;
 import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuRenderer;
 import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuRenderer.OnRadailMenuClick;
@@ -139,32 +136,7 @@ public class MainActivity extends Activity {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
 					false);
 			
-			ArcMenu menu = (ArcMenu) rootView.findViewById(R.id.arc_menu);
-
-		    ArcLayout arcLayout= new ArcLayout(this.getActivity());
-		    arcLayout.setChildSize(50);
-		    arcLayout.setArc(0.0f, 300.0f); 
-
-
-
-		    final int itemCount = ITEM_DRAWABLES.length;
-		    for (int i = 0; i < itemCount; i++) {
-		        ImageView item = new ImageView(getActivity().getApplicationContext());
-		        item.setImageResource(ITEM_DRAWABLES[i]);
-
-		        final int position = i;
-		        menu.addItem(item, new OnClickListener() {
-
-		            @Override
-		            public void onClick(View v) {
-		                Toast.makeText(getActivity(), "position:" + position, Toast.LENGTH_SHORT).show();
-		            }
-		        });// Add a menu item
-		    }
 			
-		   
-			
-		    
 		    
 			return rootView;
 		}
