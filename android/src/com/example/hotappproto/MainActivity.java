@@ -115,12 +115,13 @@ public class MainActivity extends Activity {
 					false);
 			
 			RelativeLayout v = (RelativeLayout) rootView.findViewById(R.id.rellayout1);
-			mRenderer = new RadialMenuRenderer(v, true, 60, 120);
+			mRenderer = new RadialMenuRendererClone(v, true, 60, 120);
 			mRenderer.setMenuBackgroundColor(0xcc000000);
 			mRenderer.setMenuSelectedColor(0xdd0069C4);
 			menuItem = new RadialMenuItem("Test","Test");
 			menuItem2 = new RadialMenuItem("Test","Test");
 			menuItem3 = new RadialMenuItem("Test","Test");
+
 			
 			items = new ArrayList<RadialMenuItem>();
 			
