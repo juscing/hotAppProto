@@ -4,13 +4,19 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -19,23 +25,28 @@ import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuRenderer;
 import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuRenderer.OnRadailMenuClick;
 
 public class MainActivity extends Activity {
-	
-	
+
+    PlaceholderFragment placeholderFragment;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_main);
+        ImageView backgroundView = (ImageView) findViewById(R.id.backgroundView);
 
-		if (savedInstanceState == null) {
-			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
-		
-		
-		
-		
-	    
-	    
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            backgroundView.setBackgroundResource(R.drawable.floor_plan);
+        } else {
+            backgroundView.setBackgroundResource(R.drawable.home_screen);
+
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            placeholderFragment = new PlaceholderFragment();
+            transaction.add(R.id.container, placeholderFragment);
+            transaction.commit();
+        }
+
 	    /*
 	    v.setOnTouchListener(new OnTouchListener() {
 
@@ -43,13 +54,24 @@ public class MainActivity extends Activity {
 			public boolean onTouch(View v, MotionEvent event) {
 				pieMenu.setSourceLocation((int) event.getX(), (int) event.getY());
 				pieMenu.show(v);
-				
+
 				return false;
 			}
-	    	
+
 	    });
 	    */
 	}
+
+    @Override
+    public void onSaveInstanceState(Bundle state)
+    {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.remove(placeholderFragment);
+            ft.commit();
+        }
+        super.onSaveInstanceState(state);
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
