@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 
-import com.example.menustuff.*;
-
 
 public class MenuActivity extends Activity {
 

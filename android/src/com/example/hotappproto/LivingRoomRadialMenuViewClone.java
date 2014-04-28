@@ -7,12 +7,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 
 import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuRenderer;
 import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuView;
 
-public class RadialMenuViewClone extends RadialMenuView{
+public class LivingRoomRadialMenuViewClone extends RadialMenuView{
 	
 	float mWidth = -1;//center of screen, will change to touch location
 	
@@ -23,14 +22,17 @@ public class RadialMenuViewClone extends RadialMenuView{
 	float mRadius;
 	
 	private Paint imgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+    private Bitmap lampIcon;
+    private Bitmap tvIcon;
+    private Bitmap fireIcon;
 	
-	private Bitmap icon1;
-	
-	public RadialMenuViewClone(Context context, RadialMenuRenderer renderer) {
+	public LivingRoomRadialMenuViewClone(Context context, RadialMenuRenderer renderer) {
 		super(context, renderer);
 		mRadius = renderer.getRadius();
-		icon1 = BitmapFactory.decodeResource(context.getResources(), R.drawable.lamp_icon);
-		
+		lampIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.lamp_icon);
+        tvIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.tv_icon);
+        fireIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.fireplace_icon);
 	}
 	
 	public void setLoc(float x, float y) {
@@ -53,12 +55,19 @@ public class RadialMenuViewClone extends RadialMenuView{
 	@Override
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		
-		
-		final RectF rect = new RectF();
-		
-		rect.set(mWidth - mRadius, mHeight - mRadius, mWidth + mRadius, mHeight + mRadius);
-		canvas.drawBitmap(icon1, null, rect, null);
+
+        final RectF lampRect = new RectF();
+        int shrinkage = 112;
+        lampRect.set(mWidth - mRadius + shrinkage, mHeight - mRadius + shrinkage, mWidth + mRadius - shrinkage, mHeight + mRadius - shrinkage);
+        final RectF tvRect = new RectF(lampRect);
+        final RectF fireRect = new RectF(lampRect);
+
+        lampRect.offset(0, -150);
+        tvRect.offset(120, 95);
+        fireRect.offset(-120, 95);
+		canvas.drawBitmap(lampIcon, null, lampRect, null);
+        canvas.drawBitmap(tvIcon, null, tvRect, null);
+        canvas.drawBitmap(fireIcon, null, fireRect, null);
 		//Drawable drawable = getResources().getDrawable(R.drawable.fireplace_icon);
 	}
 	
