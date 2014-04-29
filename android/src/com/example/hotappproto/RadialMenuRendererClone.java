@@ -1,5 +1,6 @@
 package com.example.hotappproto;
 
+import android.app.Activity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -11,9 +12,12 @@ public class RadialMenuRendererClone extends RadialMenuRenderer {
 	private View mParentView;
     private String room;
 	
-	public RadialMenuRendererClone(View parentView, boolean alt, float mThick,
+    private Activity a;
+    
+	public RadialMenuRendererClone(Activity a, View parentView, boolean alt, float mThick,
 			float mRadius, String room) {
 		super(parentView, alt, mThick, mRadius);
+		this.a = a;
 		this.mParentView = parentView;
         this.room = room;
 	}
@@ -23,7 +27,7 @@ public class RadialMenuRendererClone extends RadialMenuRenderer {
 	public View renderView() {
         final LivingRoomRadialMenuViewClone livingRoommenu = new LivingRoomRadialMenuViewClone(mParentView.getContext(), this);
         final KitchenRadialMenuViewClone kitchenMenu = new KitchenRadialMenuViewClone(mParentView.getContext(), this);
-
+        
         if (room.equals("kitchen")) {
             mParentView.setOnTouchListener(new OnTouchListener() {
                 @Override

@@ -1,17 +1,26 @@
 package com.example.hotappproto;
 
+import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.view.MotionEvent;
+import android.view.View;
 
+import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuHelperFunctions;
+import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuItem;
 import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuRenderer;
 import com.touchmenotapps.widget.radialmenu.menu.v2.RadialMenuView;
 
 public class LivingRoomRadialMenuViewClone extends RadialMenuView{
+	
+	private ArrayList<RadialMenuItem> mRadialMenuContent = new ArrayList<RadialMenuItem>(0);
 	
 	float mWidth = -1;//center of screen, will change to touch location
 	
@@ -21,18 +30,67 @@ public class LivingRoomRadialMenuViewClone extends RadialMenuView{
 	
 	float mRadius;
 	
+	float[] endTouch;
+	
+	private RadialMenuHelperFunctions mHelperFunctions;
+	
 	private Paint imgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	
+	int selected = -1;
 
+	int lastE = -1;//last event, used to prevent excessive redrawing
+	
+	boolean alt;
+	
+	
+	private Paint mBgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	
+	private Paint mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+	private Paint mSelectedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+	private Paint mBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+	
+	
+	public Context c;
+	
     private Bitmap lampIcon;
     private Bitmap tvIcon;
     private Bitmap fireIcon;
 	
 	public LivingRoomRadialMenuViewClone(Context context, RadialMenuRenderer renderer) {
 		super(context, renderer);
+		c = context;
 		mRadius = renderer.getRadius();
 		lampIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.lamp_icon);
         tvIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.tv_icon);
         fireIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.fireplace_icon);
+        mHelperFunctions = new RadialMenuHelperFunctions();
+        mRadialMenuContent = renderer.getRadialMenuContent();
+        alt = renderer.isAlt();
+        
+		
+		mThickness = renderer.getMenuThickness();
+		mRadius = renderer.getRadius();
+		setVisibility(GONE);
+		initSetPaint(renderer);
+	}
+	
+	private void initSetPaint(RadialMenuRenderer renderer) {
+		mBgPaint.setColor(renderer.getMenuBackgroundColor());
+		mBgPaint.setStrokeWidth(renderer.getMenuThickness());
+		mBgPaint.setStyle(Paint.Style.STROKE);
+
+		mSelectedPaint.setColor(renderer.getMenuSelectedColor());
+		mSelectedPaint.setStrokeWidth(renderer.getMenuThickness());
+		mSelectedPaint.setStyle(Paint.Style.STROKE);
+
+		mBorderPaint.setColor(renderer.getMenuBorderColor());
+		mBorderPaint.setStrokeWidth(renderer.getMenuThickness());
+		mBorderPaint.setStyle(Paint.Style.STROKE);
+
+		mTextPaint.setColor(renderer.getMenuTextColor());
+		mTextPaint.setTextSize((float) (renderer.getMenuThickness() / 2));
 	}
 	
 	public void setLoc(float x, float y) {
@@ -71,4 +129,19 @@ public class LivingRoomRadialMenuViewClone extends RadialMenuView{
 		//Drawable drawable = getResources().getDrawable(R.drawable.fireplace_icon);
 	}
 	
+	@Override
+	public boolean gestureHandler(MotionEvent event, boolean eat) {
+		if (event.getAction() == MotionEvent.ACTION_UP) {
+			endTouch = new float[] { event.getX(), event.getY() };
+			if (mHelperFunctions.distance(mWidth, mHeight, endTouch[0], endTouch[1]) > mRadius - mThickness / 2) {
+				start();
+			}
+		}
+		return super.gestureHandler(event, eat);
+	}
+	
+	
+	public void start() {
+		
+	}
 }

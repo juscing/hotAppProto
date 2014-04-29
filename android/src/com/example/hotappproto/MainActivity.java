@@ -117,8 +117,8 @@ public class MainActivity extends Activity {
             FrameLayout livingRoomView = (FrameLayout) rootView.findViewById(R.id.livingRoomFrame);
             FrameLayout kitchenView = (FrameLayout) rootView.findViewById(R.id.kitchenFrame);
 
-            livingRoomRenderer = new RadialMenuRendererClone(livingRoomView, true, 100, 150, "livingRoom");
-            kitchenRenderer = new RadialMenuRendererClone(kitchenView, true, 100, 150, "kitchen");
+            livingRoomRenderer = new RadialMenuRendererClone(this.getActivity(), livingRoomView, true, 100, 150, "livingRoom");
+            kitchenRenderer = new RadialMenuRendererClone(this.getActivity(), kitchenView, true, 100, 150, "kitchen");
             livingRoomRenderer.setMenuBackgroundColor(0xcc000000);
             livingRoomRenderer.setMenuSelectedColor(0xdd0069C4);
             kitchenRenderer.setMenuBackgroundColor(0xcc000000);
